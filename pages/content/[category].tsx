@@ -5,7 +5,7 @@ import Layout from '@/components/Layout';
 import ContentVideoCard from '@/components/ContentVideoCard';
 import Link from 'next/link';
 
-// Static map for category logos (same as sidebar)
+// Static map for category logos
 const iconMap: Record<string, string> = {
   comedy: 'https://i.postimg.cc/fbHv3v1L/unnamed-removebg-preview.png',
   gaming: 'https://i.postimg.cc/bNCYBSXk/image.png',
@@ -35,6 +35,7 @@ interface Category {
 export default function ContentCategoryPage() {
   const router = useRouter();
   const { category } = router.query;
+
   const [videos, setVideos] = useState<Video[]>([]);
   const [categoryInfo, setCategoryInfo] = useState<Category | null>(null);
   const [loading, setLoading] = useState(true);
@@ -49,20 +50,18 @@ export default function ContentCategoryPage() {
           axios.get('/api/categories?active=true'),
         ]);
 
-        if (videosRes.data.success) {
+        if (videosRes.data?.success) {
           setVideos(videosRes.data.data);
         }
 
-        if (categoriesRes.data.success) {
-          const foundCategory = categoriesRes.data.data.find(
+        if (categoriesRes.data?.success) {
+          const found = categoriesRes.data.data.find(
             (cat: Category) => cat.slug === category
           );
-          if (foundCategory) {
-            setCategoryInfo(foundCategory);
-          }
+          setCategoryInfo(found || null);
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
+      } catch (err) {
+        console.error('Error fetching category data:', err);
       } finally {
         setLoading(false);
       }
@@ -71,22 +70,24 @@ export default function ContentCategoryPage() {
     fetchData();
   }, [category]);
 
-  if (!loading && !categoryInfo && category) {
+  // Category Not Found Page
+  if (!loading && !categoryInfo) {
     return (
-      <Layout title="Content Category">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
-              Category Not Found
-            </h1>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              The category "{category}" does not exist or is inactive.
-            </p>
-            <Link href="/" className="text-primary-600 dark:text-primary-400 hover:underline inline-flex items-center space-x-2">
-              <span>←</span>
-              <span>Back to Home</span>
-            </Link>
-          </div>
+      <Layout title="Category Not Found">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-4">
+            Category Not Found
+          </h1>
+          <p className="text-gray-600 dark:text-gray-400 mb-8">
+            The category "<span className="font-semibold">{category}</span>" does not exist or is inactive.
+          </p>
+
+          <Link
+            href="/"
+            className="text-primary-600 dark:text-primary-400 font-semibold hover:underline"
+          >
+            ← Back to Home
+          </Link>
         </div>
       </Layout>
     );
@@ -94,50 +95,57 @@ export default function ContentCategoryPage() {
 
   return (
     <Layout
-      title={categoryInfo ? `${categoryInfo.name} - Content` : 'Content Category'}
-      description={categoryInfo ? `${categoryInfo.name} videos from Wisdom Circle – Malahida` : 'Content videos from Wisdom Circle – Malahida'}
+      title={categoryInfo ? `${categoryInfo.name} - Content` : 'Content'}
+      description={
+        categoryInfo
+          ? `${categoryInfo.name} videos from Wisdom Circle – Malahida`
+          : 'Content videos from Wisdom Circle – Malahida'
+      }
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 lg:py-12">
-        <div className="mb-12">
-          <Link
-            href="/"
-            className="text-primary-600 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300 font-semibold mb-6 inline-flex items-center space-x-2 transition-colors duration-200"
-          >
-            <span>←</span>
-            <span>Back to Home</span>
-          </Link>
-          <div className="text-center mt-6">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold text-gray-900 dark:text-white mb-4 flex items-center justify-center">
-              {categoryInfo && (
-                <>
-                  {iconMap[categoryInfo.slug] ? (
-                    <img
-                      src={iconMap[categoryInfo.slug]}
-                      alt={categoryInfo.name}
-                      className="mr-5 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-lg object-cover ring-1 ring-gray-200 dark:ring-gray-700"
-                    />
-                  ) : (
-                    <span className="mr-4 text-5xl md:text-6xl">{categoryInfo.icon}</span>
-                  )}
-                  <span className={`bg-gradient-to-r ${categoryInfo.color} bg-clip-text text-transparent`}>
-                    {categoryInfo.name}
-                  </span>
-                </>
-              )}
-              {!categoryInfo && (
-                <span className="bg-gradient-to-r from-primary-600 to-primary-800 dark:from-primary-400 dark:to-primary-600 bg-clip-text text-transparent">
-                  {category}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
+        
+        {/* Back Button */}
+        <Link
+          href="/"
+          className="inline-flex items-center text-primary-600 dark:text-primary-400 font-semibold hover:text-primary-700 dark:hover:text-primary-300 transition mb-10"
+        >
+          <span>←</span>
+          <span className="ml-2">Back to Home</span>
+        </Link>
+
+        {/* Category Header */}
+        <div className="text-center mb-14">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-extrabold flex items-center justify-center text-gray-900 dark:text-white mb-3">
+
+            {categoryInfo && (
+              <>
+                {iconMap[categoryInfo.slug] ? (
+                  <img
+                    src={iconMap[categoryInfo.slug]}
+                    alt={categoryInfo.name}
+                    className="mr-5 w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-lg object-cover ring-1 ring-gray-200 dark:ring-gray-700"
+                  />
+                ) : (
+                  <span className="mr-4 text-5xl md:text-6xl">{categoryInfo.icon}</span>
+                )}
+
+                <span
+                  className={`bg-gradient-to-r ${categoryInfo.color} bg-clip-text text-transparent`}
+                >
+                  {categoryInfo.name}
                 </span>
-              )}
-            </h1>
-            <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
-              Explore our {categoryInfo ? categoryInfo.name.toLowerCase() : category} content
-            </p>
-          </div>
+              </>
+            )}
+          </h1>
+
+          <p className="text-lg md:text-xl text-gray-600 dark:text-gray-300 max-w-2xl mx-auto">
+            Explore our {categoryInfo?.name.toLowerCase()} content.
+          </p>
         </div>
 
+        {/* Videos Section */}
         {loading ? (
-          <div className="text-center py-16 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
+          <div className="text-center py-20 rounded-2xl bg-gray-50 dark:bg-gray-800/40">
             <p className="text-gray-600 dark:text-gray-400 text-lg">Loading videos...</p>
           </div>
         ) : videos.length > 0 ? (
@@ -147,7 +155,7 @@ export default function ContentCategoryPage() {
             ))}
           </div>
         ) : (
-          <div className="text-center py-16 bg-gray-50 dark:bg-gray-800/50 rounded-2xl">
+          <div className="text-center py-20 rounded-2xl bg-gray-50 dark:bg-gray-800/40">
             <p className="text-gray-600 dark:text-gray-400 text-lg">
               No videos available in this category yet. Check back soon!
             </p>
@@ -157,4 +165,3 @@ export default function ContentCategoryPage() {
     </Layout>
   );
 }
-
