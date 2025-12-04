@@ -15,8 +15,6 @@ export default function ContactPage() {
     e.preventDefault();
     setSubmitting(true);
 
-    // In a real application, you would send this to an API endpoint
-    // For now, we'll just simulate a submission
     setTimeout(() => {
       setSubmitted(true);
       setSubmitting(false);
@@ -40,7 +38,7 @@ export default function ContactPage() {
               Thank You!
             </h2>
             <p className="text-green-700 dark:text-green-300">
-              Your message has been received. We'll get back to you as soon as possible.
+              Your message has been received. We&apos;ll get back to you as soon as possible.
             </p>
           </div>
         ) : (
@@ -157,4 +155,3 @@ export default function ContactPage() {
     </Layout>
   );
 }
-
