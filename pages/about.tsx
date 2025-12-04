@@ -21,8 +21,10 @@ export default function AboutPage() {
       })
       .catch(() => {
         setSettings({
-          aboutText: 'Wisdom Circle – Malahida is a community dedicated to philosophy, freethought, atheism, rationalism, and Amazigh intellectual culture.',
-          communityDescription: 'A space for Moroccan atheists, Amazigh philosophers, freethinkers, and rationalists to share ideas and engage in meaningful discourse.',
+          aboutText:
+            'Wisdom Circle – Malahida is a community dedicated to philosophy, freethought, atheism, rationalism, and Amazigh intellectual culture.',
+          communityDescription:
+            'A space for Moroccan atheists, Amazigh philosophers, freethinkers, and rationalists to share ideas and engage in meaningful discourse.',
         });
       })
       .finally(() => setLoading(false));
@@ -46,26 +48,34 @@ export default function AboutPage() {
           <div className="prose prose-lg dark:prose-invert max-w-none space-y-6">
             <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-6 mb-8">
               <p className="text-lg text-gray-700 dark:text-gray-300">
-                {settings?.aboutText || 'Wisdom Circle – Malahida is a community dedicated to philosophy, freethought, atheism, rationalism, and Amazigh intellectual culture.'}
+                {settings?.aboutText ||
+                  'Wisdom Circle – Malahida is a community dedicated to philosophy, freethought, atheism, rationalism, and Amazigh intellectual culture.'}
               </p>
             </div>
 
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Our Community</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Our Community
+              </h2>
               <p className="text-gray-700 dark:text-gray-300">
-                {settings?.communityDescription || 'A space for Moroccan atheists, Amazigh philosophers, freethinkers, and rationalists to share ideas and engage in meaningful discourse.'}
+                {settings?.communityDescription ||
+                  'A space for Moroccan atheists, Amazigh philosophers, freethinkers, and rationalists to share ideas and engage in meaningful discourse.'}
               </p>
             </div>
 
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Our Mission</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                Our Mission
+              </h2>
               <p className="text-gray-700 dark:text-gray-300">
                 Wisdom Circle – Malahida aims to foster intellectual discourse, critical thinking, and cultural exchange within the Amazigh community and beyond. We provide a platform for sharing philosophical insights, challenging ideas, and promoting rational thought.
               </p>
             </div>
 
             <div>
-              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">What We Do</h2>
+              <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
+                What We Do
+              </h2>
               <ul className="list-disc list-inside space-y-2 text-gray-700 dark:text-gray-300">
                 <li>Publish articles on philosophy, freethought, and rationalism</li>
                 <li>Host podcasts and video discussions (HEDRA)</li>
@@ -77,7 +87,7 @@ export default function AboutPage() {
 
             <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-6 mt-8">
               <p className="text-gray-700 dark:text-gray-300 italic">
-                "The unexamined life is not worth living." – Socrates
+                &quot;The unexamined life is not worth living.&quot; – Socrates
               </p>
             </div>
           </div>
@@ -86,4 +96,3 @@ export default function AboutPage() {
     </Layout>
   );
 }
-
