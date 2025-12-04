@@ -1,0 +1,290 @@
+
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background-color: #f9fafb;
+    color: #1f2937;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: #030712;
+    color: #e5e7eb;
+  }
+}
+  }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Poppins', ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, Noto Sans, sans-serif;
+  }
+
+
+@layer utilities {
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .scale-102 {
+    transform: scale(1.02);
+  }
+}
+
+@layer utilities {
+  .line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
+/* Prose styles for markdown content */
+
+.prose {
+  font-family: 'Merriweather', ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+  color: #374151; /* gray-700 في الفاتح */
+  line-height: 1.625;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose {
+    color: #e5e7eb; /* gray-200 نص مريح وواضح في الداكن */
+  }
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4,
+.prose h5,
+.prose h6 {
+  color: #111827;
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  letter-spacing: -0.025em;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose h1,
+  .prose h2,
+  .prose h3,
+  .prose h4,
+  .prose h5,
+  .prose h6 {
+    color: #f3f4f6; /* gray-100 عناوين أوضح مع راحة */
+  }
+}
+
+.prose h1 {
+  font-size: 1.875rem;
+  line-height: 2.25rem;
+}
+
+.prose h2 {
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+
+.prose h3 {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+}
+
+.prose p {
+  margin-bottom: 1.5rem; /* Tailwind’s mb-6 */
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose p {
+    line-height: 1.8; /* راحة أكبر للقراءة في الداكن */
+  }
+}
+
+.prose ul,
+.prose ol {
+  margin-bottom: 1rem; /* mb-4 */
+  margin-left: 1.5rem; /* ml-6 */
+}
+
+.prose ul {
+  list-style-type: disc;
+}
+
+.prose ol {
+  list-style-type: decimal;
+}
+
+.prose li {
+  margin-bottom: 0.5rem; /* mb-2 */
+}
+
+.prose a {
+  color: #2563eb;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose a {
+    color: #93c5fd; /* أزرق أهدأ وأوضح للروابط في الداكن */
+  }
+}
+
+
+.prose blockquote {
+  border-left-width: 4px;
+  border-color: #3b82f6;
+  padding-left: 1rem;
+  font-style: italic;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  background-color: #f9fafb;
+  border-radius: 0.375rem;
+  padding-top: 0.75rem;
+  padding-bottom: 0.75rem;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose blockquote {
+    background-color: #0f141a; /* خلفية أهدأ للاقتباس في الداكن */
+  }
+}
+
+
+.prose code {
+  background-color: #f3f4f6;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  color: #db2777;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose code {
+    background-color: #0f141a; /* تباين أفضل للكود */
+    color: #ffd1a6; /* لون دافئ وواضح للكود */
+  }
+}
+
+/* .prose code rule already defined above; remove duplicate empty ruleset */
+
+
+.prose pre {
+  background-color: #f3f4f6;
+  padding: 1rem;
+  border-radius: 0.25rem;
+  overflow-x: auto;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  border: 1px solid #e5e7eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose pre {
+    background-color: #0f141a; /* خلفية موحّدة للكود في الداكن */
+    border-color: #1f2937;
+  }
+}
+
+.prose pre code {
+  background-color: transparent;
+  padding: 0;
+}
+
+.prose img {
+  border-radius: 0.75rem; /* rounded-xl */
+  margin-top: 1.5rem;    /* my-6 */
+  margin-bottom: 1.5rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); /* shadow-sm */
+}
+
+.prose strong {
+  font-weight: 700;
+  color: #111827;
+}
+
+@media (prefers-color-scheme: dark) {
+  .prose strong {
+    color: #f3f4f6; /* gray-100 إبراز مريح وواضح */
+  }
+}
+
+
+.prose em {
+  font-style: italic;
+}
+
+/* Dark mode via class (Tailwind darkMode: 'class') */
+.dark .prose { color: #e5e7eb; }
+.dark .prose h1,
+.dark .prose h2,
+.dark .prose h3,
+.dark .prose h4,
+.dark .prose h5,
+.dark .prose h6 { color: #f3f4f6; }
+.dark .prose strong { color: #f3f4f6; }
+.dark .prose p { line-height: 1.8; }
+.dark .prose a { color: #93c5fd; }
+.dark .prose blockquote { background-color: #0f141a; }
+.dark .prose code { background-color: #0f141a; color: #ffd1a6; }
+.dark .prose pre { background-color: #0f141a; border-color: #1f2937; }
+
+/* Arabic article typography (RTL) */
+.prose.prose-ar {
+  direction: rtl;
+  text-align: right;
+  font-family: 'Noto Naskh Arabic', 'Merriweather', Georgia, 'Times New Roman', serif;
+}
+.prose.prose-ar h1,
+.prose.prose-ar h2,
+.prose.prose-ar h3,
+.prose.prose-ar h4,
+.prose.prose-ar h5,
+.prose.prose-ar h6 {
+  text-align: right;
+}
+.prose.prose-ar p,
+.prose.prose-ar li {
+  line-height: 1.9;
+}
+.prose.prose-ar blockquote {
+  border-right: 4px solid rgba(59, 130, 246, 0.3);
+  border-left: 0;
+  padding-right: 1rem;
+  margin-right: 0;
+}
+.dark .prose.prose-ar blockquote {
+  border-right-color: rgba(59, 130, 246, 0.4);
+}
+.prose.prose-ar ul,
+.prose.prose-ar ol {
+  padding-right: 1.25rem;
+}
+.prose.prose-ar code,
+.prose.prose-ar pre {
+  direction: ltr;
+  text-align: left;
+}
+

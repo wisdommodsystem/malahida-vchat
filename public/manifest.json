@@ -1,0 +1,21 @@
+{
+  "name": "Wisdom Chat",
+  "short_name": "Wisdom Chat",
+  "start_url": "/chat",
+  "display": "standalone",
+  "background_color": "#0ea5e9",
+  "theme_color": "#0ea5e9",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "https://i.postimg.cc/1X42P1sw/image.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://i.postimg.cc/1X42P1sw/image.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
