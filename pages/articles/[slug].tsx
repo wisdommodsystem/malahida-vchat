@@ -7,6 +7,7 @@ import ReactMarkdown from 'react-markdown';
 import { format } from 'date-fns';
 import connectDB from '@/lib/mongodb';
 import ArticleModel, { IArticle } from '@/models/Article';
+import Image from 'next/image'; // ✅ مضافة
 
 interface ArticleProps {
   article: {
@@ -69,17 +70,35 @@ export default function ArticlePage({ article, related, canonicalURL, shortDescr
           }}
         />
       </Head>
-      <article className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12" dir={arabicRegex.test(article.title) || arabicRegex.test(article.content) ? 'rtl' : 'ltr'}>
+
+      <article
+        className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-12"
+        dir={arabicRegex.test(article.title) || arabicRegex.test(article.content) ? 'rtl' : 'ltr'}
+      >
+        {/* MAIN IMAGE */}
         <div className="rounded-2xl overflow-hidden shadow-sm mb-10 border border-gray-200 dark:border-gray-800">
           {article.imageUrl ? (
-            <div className="h-60 w-full overflow-hidden bg-gray-100 dark:bg-gray-800">
-              <img src={article.imageUrl} alt={article.title} className="w-full h-full object-cover" />
+            <div className="h-60 w-full overflow-hidden relative">
+              <Image
+                src={article.imageUrl}
+                alt={article.title}
+                fill
+                className="object-cover"
+                sizes="100vw"
+                priority
+              />
             </div>
           ) : null}
+
           <div className="bg-gradient-to-br from-primary-500/20 via-primary-600/10 to-primary-700/20 dark:from-primary-500/15 dark:via-primary-600/10 dark:to-primary-700/15 p-8">
-            <h1 className={`text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-3 tracking-tight ${arabicRegex.test(article.title) ? 'text-right' : ''}`}>
-            {article.title}
+            <h1
+              className={`text-4xl md:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-3 tracking-tight ${
+                arabicRegex.test(article.title) ? 'text-right' : ''
+              }`}
+            >
+              {article.title}
             </h1>
+
             <div className="flex items-center justify-between text-gray-700 dark:text-gray-300">
               <div className="flex items-center space-x-4">
                 <span>By {article.author}</span>
@@ -89,31 +108,56 @@ export default function ArticlePage({ article, related, canonicalURL, shortDescr
                 </time>
               </div>
               <div className="flex items-center space-x-2">
-                <svg className="w-5 h-5 text-primary-600 dark:text-primary-400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M12 5c-5 0-9 4-10 7 1 3 5 7 10 7s9-4 10-7c-1-3-5-7-10-7zm0 11a4 4 0 110-8 4 4 0 010 8zm0-2a2 2 0 100-4 2 2 0 000 4z"/></svg>
+                <svg
+                  className="w-5 h-5 text-primary-600 dark:text-primary-400"
+                  viewBox="0 0 24 24"
+                  fill="currentColor"
+                >
+                  <path d="M12 5c-5 0-9 4-10 7 1 3 5 7 10 7s9-4 10-7c-1-3-5-7-10-7zm0 11a4 4 0 110-8 4 4 0 010 8zm0-2a2 2 0 100-4 2 2 0 000 4z" />
+                </svg>
                 <span>{article.views} views</span>
               </div>
             </div>
           </div>
         </div>
 
-        <div className={`prose prose-lg max-w-none bg-[#fafaf7] dark:bg-[#0f141a] border border-gray-100 dark:border-gray-700 rounded-2xl p-6 md:p-8 shadow-md dark:text-[18px] md:dark:text-[19px] ${arabicRegex.test(article.content) ? 'prose-ar' : ''}`}>
+        {/* CONTENT */}
+        <div
+          className={`prose prose-lg max-w-none bg-[#fafaf7] dark:bg-[#0f141a] border border-gray-100 dark:border-gray-700 rounded-2xl p-6 md:p-8 shadow-md dark:text-[18px] md:dark:text-[19px] ${
+            arabicRegex.test(article.content) ? 'prose-ar' : ''
+          }`}
+        >
           <ReactMarkdown>{article.content}</ReactMarkdown>
         </div>
 
-        {/* Related Articles */}
-        {related && related.length > 0 && (
+        {/* RELATED ARTICLES */}
+        {related?.length > 0 && (
           <div className="mt-12">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">📚 Related Articles</h2>
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6">
+              📚 Related Articles
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {related.map((ra) => (
-                <Link key={ra._id} href={`/articles/${ra.slug}`} className="group bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-800 overflow-hidden">
+                <Link
+                  key={ra._id}
+                  href={`/articles/${ra.slug}`}
+                  className="group bg-white dark:bg-gray-900 rounded-xl shadow-md hover:shadow-xl transition-all duration-300 border border-gray-100 dark:border-gray-800 overflow-hidden"
+                >
                   {ra.imageUrl ? (
-                    <div className="h-32 overflow-hidden">
-                      <img src={ra.imageUrl} alt={ra.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                    <div className="h-32 overflow-hidden relative">
+                      <Image
+                        src={ra.imageUrl}
+                        alt={ra.title}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform"
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                      />
                     </div>
                   ) : null}
                   <div className="p-4">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">{ra.title}</h3>
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                      {ra.title}
+                    </h3>
                     <p className="text-sm text-gray-700 dark:text-gray-400">By {ra.author}</p>
                   </div>
                 </Link>
@@ -134,13 +178,13 @@ export default function ArticlePage({ article, related, canonicalURL, shortDescr
 
 function stripMarkdown(md: string) {
   return md
-    .replace(/!\[[^\]]*\]\([^\)]+\)/g, '') // images
-    .replace(/\[[^\]]*\]\([^\)]+\)/g, '') // links
-    .replace(/`{1,3}[^`]*`{1,3}/g, '') // inline/block code
-    .replace(/^>\s+/gm, '') // blockquotes
-    .replace(/^#{1,6}\s+/gm, '') // headings
-    .replace(/[*_~`>#-]/g, '') // markdown symbols
-    .replace(/\s+/g, ' ') // collapse whitespace
+    .replace(/!\[[^\]]*\]\([^\)]+\)/g, '')
+    .replace(/\[[^\]]*\]\([^\)]+\)/g, '')
+    .replace(/`{1,3}[^`]*`{1,3}/g, '')
+    .replace(/^>\s+/gm, '')
+    .replace(/^#{1,6}\s+/gm, '')
+    .replace(/[*_~`>#-]/g, '')
+    .replace(/\s+/g, ' ')
     .trim();
 }
 
@@ -148,9 +192,9 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   const { slug } = ctx.query as { slug: string };
   await connectDB();
 
-  // Support URLs of the form slug-id (id is a 24-hex ObjectId)
   const match = slug.match(/^(.*)-([a-f0-9]{24})$/i);
   let articleDoc: IArticle | null = null as any;
+
   if (match) {
     const [, , id] = match;
     articleDoc = await ArticleModel.findById(id);
@@ -160,24 +204,24 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   } else {
     articleDoc = await ArticleModel.findOne({ slug, approved: true });
   }
+
   if (!articleDoc) {
-    return {
-      notFound: true,
-    };
+    return { notFound: true };
   }
 
   articleDoc.views += 1;
   await articleDoc.save();
 
-  // Build canonical URL
   const proto = (ctx.req.headers['x-forwarded-proto'] as string) || 'http';
   const host = ctx.req.headers.host || 'localhost:3002';
   const canonicalURL = `${proto}://${host}/articles/${articleDoc.slug}-${articleDoc._id}`;
 
   const shortDescription = stripMarkdown(articleDoc.content).slice(0, 160);
 
-  // Related articles: recent 3 excluding current
-  const relatedDocs = await ArticleModel.find({ approved: true, _id: { $ne: articleDoc._id } })
+  const relatedDocs = await ArticleModel.find({
+    approved: true,
+    _id: { $ne: articleDoc._id },
+  })
     .sort({ createdAt: -1 })
     .select('title author slug imageUrl createdAt')
     .limit(3)
@@ -186,7 +230,7 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
   return {
     props: {
       article: {
-        _id: (articleDoc._id as string).toString(),
+        _id: articleDoc._id.toString(),
         title: articleDoc.title,
         content: articleDoc.content,
         author: articleDoc.author,
@@ -208,4 +252,3 @@ export const getServerSideProps: GetServerSideProps = async (ctx) => {
     },
   };
 };
-
